@@ -26,8 +26,7 @@ public:
 
   static TH1D *g_h2;
   static std::vector<double> g_originalValues;
-
-
+  
 private:
   int ierflg = 0;
   static constexpr double vstart = 1.0;

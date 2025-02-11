@@ -19,6 +19,13 @@ void TreeManager::readTree(const std::string &filename, const std::string &treen
     t->SetBranchAddress("Hit_Z",&Hit_Z);
     t->SetBranchAddress("Hit_Energy",&Hit_E);
     t->SetBranchAddress("Hit_ADC",&Hit_ADC);
+
+    if(do_scale){
+        ROOT::RDataFrame df("sf",sf_path);
+        df.Foreach([this](const int& id,const float& sf){
+            this->umap_id_sf[id]=sf;
+        },{"cellid","sf"});
+    }
 }
 
 void TreeManager::eventLoop(){
@@ -50,13 +57,19 @@ void TreeManager::eventLoop(){
                 if(evenSet.count(chnid)==0){continue;}
                 cellid = iLayer*100000+2*10000+chnid;
             }
-
             //Now we know the cellid of the WC 
             //We can fill the histogram now
             if(umap_id_hist.count(cellid)==0){
-                umap_id_hist[cellid] = new TH1D(TString::Format("h%d",cellid),"",50,0,50);
+                umap_id_hist[cellid] = new TH1D(TString::Format("h%d",cellid),"",47,3,50);
+            }
+            if(do_scale && umap_id_hscaled.count(cellid)==0){
+                umap_id_hscaled[cellid] = new TH1D(TString::Format("hs%d",cellid),"",47,3,50);
             }
             umap_id_hist[cellid]->Fill(wcm->getADC(cellid)/1000.);
+            if(do_scale){
+                umap_id_sf[cellid] = umap_id_sf.count(cellid)==0 ? 1. : umap_id_sf[cellid];
+                umap_id_hscaled[cellid]->Fill(wcm->getADC(cellid)/1000.*umap_id_sf[cellid]);
+            }
         }
     }
     //Calculate scale factors
@@ -65,6 +78,7 @@ void TreeManager::eventLoop(){
         if(stdcell.count(layer)==0)continue;
         auto stdcellid = layer*100000 + 20000 + stdcell[layer];
         auto sf = sfm->getSF(hist,umap_id_hist[stdcellid]);
+        if(id==620010)std::cout<<sf<<std::endl;
         sfm->recordSF(id,sf);
     }
     sfm->saveSF();
@@ -79,6 +93,14 @@ void TreeManager::eventLoop(){
         int layer = id/100000;
         fout->cd(TString::Format("layer%d",layer));
         hist->Write();
+    }
+
+    if(do_scale){
+        for(auto &[id,hist]:umap_id_hscaled){
+            int layer = id/100000;
+            fout->cd(TString::Format("layer%d",layer));
+            hist->Write();
+        }
     }
     fout->Close();
 
