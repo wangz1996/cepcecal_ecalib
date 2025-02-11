@@ -1,3 +1,0 @@
-/home/wangzhen/ecal/ecalib/build/CMakeFiles/ecalib.dir
-/home/wangzhen/ecal/ecalib/build/CMakeFiles/edit_cache.dir
-/home/wangzhen/ecal/ecalib/build/CMakeFiles/rebuild_cache.dir
