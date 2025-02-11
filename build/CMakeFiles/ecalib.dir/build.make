@@ -86,10 +86,24 @@ CMakeFiles/ecalib.dir/main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ecalib.dir/main.cc.s"
 	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/wangzhen/ecal/ecalib/main.cc -o CMakeFiles/ecalib.dir/main.cc.s
 
+CMakeFiles/ecalib.dir/src/SFManager.cc.o: CMakeFiles/ecalib.dir/flags.make
+CMakeFiles/ecalib.dir/src/SFManager.cc.o: /home/wangzhen/ecal/ecalib/src/SFManager.cc
+CMakeFiles/ecalib.dir/src/SFManager.cc.o: CMakeFiles/ecalib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ecalib.dir/src/SFManager.cc.o"
+	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ecalib.dir/src/SFManager.cc.o -MF CMakeFiles/ecalib.dir/src/SFManager.cc.o.d -o CMakeFiles/ecalib.dir/src/SFManager.cc.o -c /home/wangzhen/ecal/ecalib/src/SFManager.cc
+
+CMakeFiles/ecalib.dir/src/SFManager.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ecalib.dir/src/SFManager.cc.i"
+	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/wangzhen/ecal/ecalib/src/SFManager.cc > CMakeFiles/ecalib.dir/src/SFManager.cc.i
+
+CMakeFiles/ecalib.dir/src/SFManager.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ecalib.dir/src/SFManager.cc.s"
+	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/wangzhen/ecal/ecalib/src/SFManager.cc -o CMakeFiles/ecalib.dir/src/SFManager.cc.s
+
 CMakeFiles/ecalib.dir/src/TreeManager.cc.o: CMakeFiles/ecalib.dir/flags.make
 CMakeFiles/ecalib.dir/src/TreeManager.cc.o: /home/wangzhen/ecal/ecalib/src/TreeManager.cc
 CMakeFiles/ecalib.dir/src/TreeManager.cc.o: CMakeFiles/ecalib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ecalib.dir/src/TreeManager.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ecalib.dir/src/TreeManager.cc.o"
 	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ecalib.dir/src/TreeManager.cc.o -MF CMakeFiles/ecalib.dir/src/TreeManager.cc.o.d -o CMakeFiles/ecalib.dir/src/TreeManager.cc.o -c /home/wangzhen/ecal/ecalib/src/TreeManager.cc
 
 CMakeFiles/ecalib.dir/src/TreeManager.cc.i: cmake_force
@@ -103,7 +117,7 @@ CMakeFiles/ecalib.dir/src/TreeManager.cc.s: cmake_force
 CMakeFiles/ecalib.dir/src/WCManager.cc.o: CMakeFiles/ecalib.dir/flags.make
 CMakeFiles/ecalib.dir/src/WCManager.cc.o: /home/wangzhen/ecal/ecalib/src/WCManager.cc
 CMakeFiles/ecalib.dir/src/WCManager.cc.o: CMakeFiles/ecalib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ecalib.dir/src/WCManager.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ecalib.dir/src/WCManager.cc.o"
 	/mnt/software/anaconda3/envs/cepc/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ecalib.dir/src/WCManager.cc.o -MF CMakeFiles/ecalib.dir/src/WCManager.cc.o.d -o CMakeFiles/ecalib.dir/src/WCManager.cc.o -c /home/wangzhen/ecal/ecalib/src/WCManager.cc
 
 CMakeFiles/ecalib.dir/src/WCManager.cc.i: cmake_force
@@ -117,6 +131,7 @@ CMakeFiles/ecalib.dir/src/WCManager.cc.s: cmake_force
 # Object files for target ecalib
 ecalib_OBJECTS = \
 "CMakeFiles/ecalib.dir/main.cc.o" \
+"CMakeFiles/ecalib.dir/src/SFManager.cc.o" \
 "CMakeFiles/ecalib.dir/src/TreeManager.cc.o" \
 "CMakeFiles/ecalib.dir/src/WCManager.cc.o"
 
@@ -124,6 +139,7 @@ ecalib_OBJECTS = \
 ecalib_EXTERNAL_OBJECTS =
 
 ecalib: CMakeFiles/ecalib.dir/main.cc.o
+ecalib: CMakeFiles/ecalib.dir/src/SFManager.cc.o
 ecalib: CMakeFiles/ecalib.dir/src/TreeManager.cc.o
 ecalib: CMakeFiles/ecalib.dir/src/WCManager.cc.o
 ecalib: CMakeFiles/ecalib.dir/build.make
@@ -151,7 +167,7 @@ ecalib: /mnt/software/anaconda3/envs/cepc/lib/libTMVA.so
 ecalib: /mnt/software/anaconda3/envs/cepc/lib/libGeom.so
 ecalib: /mnt/software/anaconda3/envs/cepc/lib/libEve.so
 ecalib: CMakeFiles/ecalib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ecalib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/wangzhen/ecal/ecalib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ecalib"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ecalib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

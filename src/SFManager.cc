@@ -1,12 +1,14 @@
 #include "SFManager.hh"
-
+TH1D *SFManager::g_h2 = nullptr;
+std::vector<double> SFManager::g_originalValues;
 SFManager::SFManager(){
-
+    gSystem->Load("libMinuit");
 }
 SFManager::~SFManager(){
     
 }
-std::vector<double> getOriginalValues(TH1D* hist){
+std::vector<double> SFManager::getOriginalValues(TH1D* hist){
+    std::vector<double> values;
     for (int bin = 1; bin <= hist->GetNbinsX(); ++bin) {
         double binContent = hist->GetBinContent(bin); 
         double binCenter = hist->GetBinCenter(bin);   
@@ -14,16 +16,15 @@ std::vector<double> getOriginalValues(TH1D* hist){
             values.push_back(binCenter);
         }
     }
-
     return values;
 }
-void fcnForMinuit(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag);{
+void fcnForMinuit(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t iflag){
     double scaleFactor = par[0];
     TH1D h_temp("h_temp", "Scaled h1 distribution", 
-        g_h2->GetNbinsX(), 
-        g_h2->GetXaxis()->GetXmin(), 
-        g_h2->GetXaxis()->GetXmax());
-    for (double val : g_originalValues) {
+        SFManager::g_h2->GetNbinsX(), 
+        SFManager::g_h2->GetXaxis()->GetXmin(), 
+        SFManager::g_h2->GetXaxis()->GetXmax());
+    for (double val : SFManager::g_originalValues) {
             h_temp.Fill(val * scaleFactor);
         }
     double integral = h_temp.Integral();
@@ -34,8 +35,8 @@ void fcnForMinuit(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t 
          return;
         }
     double chi2 = 0.0;
-    for (int bin = 1; bin <= g_h2->GetNbinsX(); ++bin) {
-            double h2_val = g_h2->GetBinContent(bin);
+    for (int bin = 1; bin <= SFManager::g_h2->GetNbinsX(); ++bin) {
+            double h2_val = SFManager::g_h2->GetBinContent(bin);
             double h1_val = h_temp.GetBinContent(bin);
         if (h2_val > 0) {
                 double diff = (h1_val - h2_val);
@@ -44,11 +45,11 @@ void fcnForMinuit(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t 
     }
     f = chi2;
 }
-float getSF(TH1D* h1,TH1D* h2){
+float SFManager::getSF(TH1D* h1,TH1D* h2){
 	TH1D *g_h1= (TH1D*)h1->Clone();
-	g_h2= (TH1D*)h2->Clone();
-    g_originalValues = getOriginalValues(g_h1);
-    g_h2->Scale(1.0/g_h2->Integral());
+	SFManager::g_h2= (TH1D*)h2->Clone();
+    SFManager::g_originalValues = getOriginalValues(g_h1);
+    SFManager::g_h2->Scale(1.0/SFManager::g_h2->Integral());
     TMinuit *gMinuit = new TMinuit(1);
     gMinuit->SetFCN(fcnForMinuit);
 	gMinuit->SetPrintLevel(-1);
@@ -60,4 +61,23 @@ float getSF(TH1D* h1,TH1D* h2){
     double best_sf, best_sf_err;
     gMinuit->GetParameter(0, best_sf, best_sf_err);
 	return best_sf;
+}
+
+void SFManager::recordSF(const int& id,const float& sf){
+    umap_id_sf[id]=sf;
+}
+void SFManager::saveSF(){
+    // Save the scale factor to a file
+    auto fout=new TFile("sf_40gev.root","RECREATE");
+    auto tout=new TTree("sf","sf");
+    tout->Branch("cellid",&cellid,"cellid/I");
+    tout->Branch("sf",&sf,"sf/F");
+    for(auto& [key,val]:umap_id_sf){
+        cellid=key;
+        sf=val;
+        tout->Fill();
+    }
+    fout->cd();
+    tout->Write();
+    fout->Close();
 }

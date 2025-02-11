@@ -17,7 +17,7 @@ find_package(yaml-cpp REQUIRED)
 #
 include_directories(${YAML_CPP_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/include
-		    ${ROOT_INCLUDE_DIR})
+		    ${ROOT_INCLUDE_DIRS})
 
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
@@ -26,7 +26,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 # Add the executable, and link it to the Geant4 libraries
 #
 add_executable(ecalib main.cc ${sources} ${headers})
-target_link_libraries(ecalib ${ROOT_LIBRARIES} yaml-cpp )
+target_link_libraries(ecalib ${ROOT_LIBRARIES} yaml-cpp Minuit)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX

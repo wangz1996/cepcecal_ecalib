@@ -153,6 +153,30 @@ main.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ecalib.dir/build.make CMakeFiles/ecalib.dir/main.cc.s
 .PHONY : main.cc.s
 
+src/SFManager.o: src/SFManager.cc.o
+.PHONY : src/SFManager.o
+
+# target to build an object file
+src/SFManager.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ecalib.dir/build.make CMakeFiles/ecalib.dir/src/SFManager.cc.o
+.PHONY : src/SFManager.cc.o
+
+src/SFManager.i: src/SFManager.cc.i
+.PHONY : src/SFManager.i
+
+# target to preprocess a source file
+src/SFManager.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ecalib.dir/build.make CMakeFiles/ecalib.dir/src/SFManager.cc.i
+.PHONY : src/SFManager.cc.i
+
+src/SFManager.s: src/SFManager.cc.s
+.PHONY : src/SFManager.s
+
+# target to generate assembly for a file
+src/SFManager.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ecalib.dir/build.make CMakeFiles/ecalib.dir/src/SFManager.cc.s
+.PHONY : src/SFManager.cc.s
+
 src/TreeManager.o: src/TreeManager.cc.o
 .PHONY : src/TreeManager.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/SFManager.o"
+	@echo "... src/SFManager.i"
+	@echo "... src/SFManager.s"
 	@echo "... src/TreeManager.o"
 	@echo "... src/TreeManager.i"
 	@echo "... src/TreeManager.s"
