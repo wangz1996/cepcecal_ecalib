@@ -32,7 +32,7 @@ private:
   static constexpr double vstart = 1.0;
   static constexpr double step   = 0.01;
   static constexpr double minVal = 0.1;
-  static constexpr double maxVal = 5.0;
+  static constexpr double maxVal = 3.0;
   std::unordered_map<int,float> umap_id_sf;
   float sf;
   int cellid;

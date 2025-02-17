@@ -50,7 +50,7 @@ float SFManager::getSF(TH1D* h1,TH1D* h2){
 	SFManager::g_h2= (TH1D*)h2->Clone();
     SFManager::g_originalValues = getOriginalValues(g_h1);
     SFManager::g_h2->Scale(1.0/SFManager::g_h2->Integral());
-    TMinuit *gMinuit = new TMinuit(1);
+    TMinuit *gMinuit = new TMinuit(2);
     gMinuit->SetFCN(fcnForMinuit);
 	gMinuit->SetPrintLevel(-1);
     int ierflg = 0;
