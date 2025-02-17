@@ -44,6 +44,10 @@ private:
   static constexpr std::array<int,30> posArr{35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,14,13,12,11,10,9,8,7,6,5,4,3};
   std::unordered_map<int,TH1D*> umap_id_hist;
   std::unordered_map<int,TH1D*> umap_id_hscaled;
+  std::unordered_map<int,TH1D*> umap_layer_hadc;
+  std::unordered_map<int,TH1D*> umap_layer_hadcscale;
+  std::unordered_map<int,TH1D*> umap_layer_henergy;
+  std::unordered_map<int,TH1D*> umap_layer_henergyscale;
   std::unordered_map<int,float> umap_id_sf;
 
   bool do_scale;

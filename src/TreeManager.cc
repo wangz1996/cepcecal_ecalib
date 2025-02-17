@@ -40,6 +40,10 @@ void TreeManager::eventLoop(){
         //Find the cell which wc falls into
         for(size_t iLayer=0; iLayer<NLayers; iLayer++){
             int cellid=0;
+            float adc_sum=0.;
+            float adcscale_sum=0.;
+            float energy_sum=0.;
+            float energyscale_sum=0.;
             if(!wcm->layerNoEmpty(iLayer))continue;
             if(iLayer%2==1){//odd layers
                 int x_i = round((wcm->getWCX(iLayer)+108.65)/5.3);
@@ -48,6 +52,15 @@ void TreeManager::eventLoop(){
                 int chnid = posArr[x_i];
                 if(oddSet.count(chnid)==0){continue;}
                 cellid = iLayer*100000+2*10000+chnid;
+                if(chnid == 11 || chnid == 12){
+                    for(auto j:oddSet){
+                    int cellid_j = iLayer*100000+2*10000+j;
+                    adc_sum += wcm->getADC(cellid_j)/1000.;
+                    adcscale_sum += wcm->getADC(cellid_j)/1000.*umap_id_sf[cellid_j];
+                    energy_sum += wcm->getE(cellid_j);
+                    energyscale_sum += wcm->getE(cellid_j)*umap_id_sf[cellid_j];
+                }
+                }
             }
             else{//even layers
                 int x_i = round((wcm->getWCX(iLayer)+90.8)/45.4);
@@ -56,6 +69,15 @@ void TreeManager::eventLoop(){
                 int chnid = posArr[y_i];
                 if(evenSet.count(chnid)==0){continue;}
                 cellid = iLayer*100000+2*10000+chnid;
+                if(chnid == 9 || chnid == 10){
+                    for(auto j:evenSet){
+                    int cellid_j = iLayer*100000+2*10000+j;
+                    adc_sum += wcm->getADC(cellid_j)/1000.;
+                    adcscale_sum += wcm->getADC(cellid_j)/1000.*umap_id_sf[cellid_j];
+                    energy_sum += wcm->getE(cellid_j);
+                    energyscale_sum += wcm->getE(cellid_j)*umap_id_sf[cellid_j];
+                }
+                }
             }
             //Now we know the cellid of the WC 
             //We can fill the histogram now
@@ -70,6 +92,22 @@ void TreeManager::eventLoop(){
                 umap_id_sf[cellid] = umap_id_sf.count(cellid)==0 ? 1. : umap_id_sf[cellid];
                 umap_id_hscaled[cellid]->Fill(wcm->getADC(cellid)/1000.*umap_id_sf[cellid]);
             }
+            if(umap_layer_hadc.count(iLayer)==0){
+                umap_layer_hadc[iLayer] = new TH1D(TString::Format("hadc%d",iLayer),"",100,0,100);
+            }
+            if(adc_sum>2.)umap_layer_hadc[iLayer]->Fill(adc_sum);
+            if(umap_layer_hadcscale.count(iLayer)==0){
+                umap_layer_hadcscale[iLayer] = new TH1D(TString::Format("hadcscale%d",iLayer),"",100,0,100);
+            }
+            if(adcscale_sum>2.)umap_layer_hadcscale[iLayer]->Fill(adcscale_sum);
+            if(umap_layer_henergy.count(iLayer)==0){
+                umap_layer_henergy[iLayer] = new TH1D(TString::Format("henergy%d",iLayer),"",100,0,230);
+            }
+            if(energy_sum>5.)umap_layer_henergy[iLayer]->Fill(energy_sum);
+            if(umap_layer_henergyscale.count(iLayer)==0){
+                umap_layer_henergyscale[iLayer] = new TH1D(TString::Format("henergyscale%d",iLayer),"",100,0,230);
+            }
+            if(energyscale_sum>5.)umap_layer_henergyscale[iLayer]->Fill(energyscale_sum);
         }
     }
     //Calculate scale factors
@@ -94,6 +132,23 @@ void TreeManager::eventLoop(){
         fout->cd(TString::Format("layer%d",layer));
         hist->Write();
     }
+    for(auto &[layer,hist]:umap_layer_hadc){
+        fout->cd(TString::Format("layer%d",layer));
+        hist->Write();
+    }
+    for(auto &[layer,hist]:umap_layer_hadcscale){
+        fout->cd(TString::Format("layer%d",layer));
+        hist->Write();
+    }
+    for(auto &[layer,hist]:umap_layer_henergy){
+        fout->cd(TString::Format("layer%d",layer));
+        hist->Write();
+    }
+    for(auto &[layer,hist]:umap_layer_henergyscale){
+        fout->cd(TString::Format("layer%d",layer));
+        hist->Write();
+    }
+    //Write the scaled histograms to a root file
 
     if(do_scale){
         for(auto &[id,hist]:umap_id_hscaled){
