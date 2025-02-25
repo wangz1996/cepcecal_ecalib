@@ -15,6 +15,8 @@
 #include <ROOT/RDataFrame.hxx>
 #include "WCManager.hh"
 #include "SFManager.hh"
+#include "MPVManager.hh"
+#include "Logger.hh"
 
 class TreeManager{
 
@@ -40,6 +42,7 @@ private:
 
   WCManager *wcm;
   SFManager *sfm;
+  MPVManager *mpvm;
 
   static constexpr std::array<int,30> posArr{35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,14,13,12,11,10,9,8,7,6,5,4,3};
   std::unordered_map<int,TH1D*> umap_id_hist;

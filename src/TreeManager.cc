@@ -3,6 +3,8 @@
 TreeManager::TreeManager() {
     wcm = new WCManager();
     sfm = new SFManager();
+    mpvm = new MPVManager("/mnt2/USTC/jxwang/CEPC_ScECAL/CEPCforZhen/MIPCalib_Spectrum/all_auto_muon_v4_NoForceSet.root","MIP_Fit");
+    Logger::getInstance().init("log.txt");
     // fout = new TFile("hist.root","RECREATE");
 }
 TreeManager::~TreeManager() {
@@ -55,6 +57,7 @@ void TreeManager::eventLoop(){
                 if(chnid == 11 || chnid == 12){
                     for(auto j:oddSet){
                     int cellid_j = iLayer*100000+2*10000+j;
+                    umap_id_sf[cellid_j] = umap_id_sf.count(cellid_j)==0 ? 1. : umap_id_sf[cellid_j];
                     adc_sum += wcm->getADC(cellid_j)/1000.;
                     adcscale_sum += wcm->getADC(cellid_j)/1000.*umap_id_sf[cellid_j];
                     energy_sum += wcm->getE(cellid_j);
@@ -72,6 +75,7 @@ void TreeManager::eventLoop(){
                 if(chnid == 9 || chnid == 10){
                     for(auto j:evenSet){
                     int cellid_j = iLayer*100000+2*10000+j;
+                    umap_id_sf[cellid_j] = umap_id_sf.count(cellid_j)==0 ? 1. : umap_id_sf[cellid_j];
                     adc_sum += wcm->getADC(cellid_j)/1000.;
                     adcscale_sum += wcm->getADC(cellid_j)/1000.*umap_id_sf[cellid_j];
                     energy_sum += wcm->getE(cellid_j);
@@ -79,6 +83,12 @@ void TreeManager::eventLoop(){
                 }
                 }
             }
+            //Log part
+            umap_id_sf[cellid] = umap_id_sf.count(cellid)==0 ? 1. : umap_id_sf[cellid];
+            std::string key_unscale = TString::Format("%d_%d_unscale",iLayer,cellid%100).Data();
+            std::string key_scaled = TString::Format("%d_%d_scaled",iLayer,cellid%100).Data();
+            Logger::getInstance().log(key_unscale,wcm->getADC(cellid)/mpvm->getMPV(cellid)*0.305/1000.);
+            Logger::getInstance().log(key_scaled,wcm->getADC(cellid)/mpvm->getMPV(cellid)*0.305/1000.*umap_id_sf[cellid]);
             //Now we know the cellid of the WC 
             //We can fill the histogram now
             if(umap_id_hist.count(cellid)==0){
@@ -89,7 +99,7 @@ void TreeManager::eventLoop(){
             }
             umap_id_hist[cellid]->Fill(wcm->getADC(cellid)/1000.);
             if(do_scale){
-                umap_id_sf[cellid] = umap_id_sf.count(cellid)==0 ? 1. : umap_id_sf[cellid];
+                
                 umap_id_hscaled[cellid]->Fill(wcm->getADC(cellid)/1000.*umap_id_sf[cellid]);
             }
             if(umap_layer_hadc.count(iLayer)==0){
